@@ -1,80 +1,201 @@
 // ---------- 1.2.2  Структура коду ----------
 /* Хороший код */
-class User(val name: String, val age: Int)
+// Пакет моделей користувачів
+package com.example.models;
 
-/* Поганий код */
-class User { /* ... */ }
-class Order { /* ... */ }
-class Invoice { /* ... */ }
+// Кожен клас розміщується в окремому файлі з відповідною назвою
+public class User {
 
-// ---------- 1.2.3 Форматування коду ----------
-/* Хороший код */
-fun printHello(user: User?) {
-    if (user != null) {
-        println("Hello, ${user.name}")
+    private String name;
+    private int age;
+
+    // Конструктор класу
+    public User(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    // Метод для отримання імені користувача
+    public String getName() {
+        return name;
+    }
+
+    // Метод для отримання віку користувача
+    public int getAge() {
+        return age;
     }
 }
 
+
 /* Поганий код */
-fun badHello(u:User?){if(u!=null){println("Hello,"+u.name)}}
+// Усі класи розміщені в одному файлі — це порушує конвенції Java
+public class User {
+    String name;
+    int age;
+}
+
+public class Order {
+    int id;
+    double price;
+}
+
+public class Product {
+    String title;
+    double cost;
+}
+
+
+// ---------- 1.2.3 Форматування коду ----------
+/* Хороший код */
+for (int i = 0; i < 10; i++) {
+    System.out.println("Iteration: " + i);
+
+    if (i % 2 == 0) {
+        System.out.println("Even number");
+    } else {
+        System.out.println("Odd number");
+    }
+}
+
+
+/* Поганий код */
+for(int i=0;i<10;i++){System.out.println("Iteration:"+i);if(i%2==0){System.out.println("Even number");}else{System.out.println("Odd number");}}
+
 
 // ---------- 1.2.4 Іменування ----------
 /* Хороший код */
-val userName: String = "Іван"
-fun getUserAge(): Int = 25
-class UserProfile
-const val MAX_RETRY_COUNT = 3
+// camelCase для змінних і методів
+double accountBalance;
+String accountHolderName;
+
+public void depositAmount(double amount) {
+    accountBalance += amount;
+}
+
+// PascalCase для класів
+public class BankAccount {
+    private String holderName;
+    private double balance;
+}
+
+// UPPER_SNAKE_CASE для констант
+public static final double MINIMUM_BALANCE = 100.0;
+
 
 /* Поганий код */
-val User_name: String = "Іван"
-fun Get_user_Age(): Int = 25
-class user_profile
+// неправильний стиль іменування змінних і методів
+double Account_Balance;
+String Accountholdername;
+
+public void Deposit_Amount(double Amount) {
+    Account_Balance += Amount;
+}
+
+// неправильний стиль іменування класів
+public class bank_account {
+    String Holdername;
+    double Balance;
+}
+
+// неправильний стиль для констант
+public static final double minimumbalance = 100.0;
+
 
 // ---------- 1.2.5 Коментарі ----------
 /* Хороший код */
-// Обчислюємо податок для замовлення з урахуванням ПДВ
-val tax = order.calculateTax()
+// Створюємо новий користувацький акаунт і відправляємо підтвердження на email
+User newUser = userService.registerUser("john.doe@example.com");
+
+// Логування події створення акаунта для аудиту
+logger.info("New user registered: " + newUser.getEmail());
+
+// Перевіряємо, чи користувач має права адміністратора
+if (newUser.isAdmin()) {
+    grantAdminAccess(newUser);
+}
+
 
 /* Поганий код */
-// Змінна tax
-val badTax = order.calculateTax()
+// newUser
+User newUser = userService.registerUser("john.doe@example.com");
+
+// logger
+logger.info("New user registered: " + newUser.getEmail());
+
+// Якщо користувач адміністратор
+if (newUser.isAdmin()) {
+    grantAdminAccess(newUser);
+}
+
 
 // ---------- 1.2.6 Документування коду ----------
 /**
- * Обчислює знижку для клієнта.
+ * Обчислює знижку для клієнта на основі суми покупки.
  *
- * @param amount сума покупки
+ * @param amount сума покупки у гривнях
  * @return розмір знижки у відсотках
- * @sample calculateDiscount(200.0) // повертає 10
+ * @since 1.0
+ * @see Customer
  */
-fun calculateDiscount(amount: Double): Int {
-    return if (amount > 100) 10 else 0
+public int calculateDiscount(double amount) {
+    if (amount >= 200) {
+        return 15;
+    } else if (amount >= 100) {
+        return 10;
+    } else {
+        return 0;
+    }
 }
+
 
 // ---------- 1.2.8 Кодування на основі тестування (TDD) ----------
 /* Хороший тест */
-@Test
-fun testDiscount() {
-    assertEquals(10, calculateDiscount(200.0))
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import org.junit.jupiter.api.Test;
+
+public class PrimeNumberTest {
+
+    @Test
+    void testIsPrime() {
+        assertTrue(PrimeChecker.isPrime(7));
+        assertFalse(PrimeChecker.isPrime(10));
+    }
 }
 
+
 /* Реалізація */
-fun calculateDiscountTDD(amount: Double): Int = if (amount > 100) 10 else 0
+public class PrimeChecker {
+
+    public static boolean isPrime(int number) {
+        if (number <= 1) return false;
+        for (int i = 2; i <= Math.sqrt(number); i++) {
+            if (number % i == 0) return false;
+        }
+        return true;
+    }
+}
+
 
 // ---------- 1.2.10 Приклади оформлення коду ----------
 /* Хороший код */
-fun isAdult(age: Int): Boolean {
-    return age >= 18
-}
+public class NumberUtils {
 
-fun printUserInfo(user: User) {
-    println("Name: ${user.name}")
-    println("Age: ${user.age}")
+    public static boolean isEven(int number) {
+        return number % 2 == 0;
+    }
+
+    public static void printNumberInfo(int number) {
+        System.out.println("Number: " + number);
+        System.out.println("Even: " + isEven(number));
+    }
 }
 
 class ProperUser(val name: String, val age: Int)
 
 /* Поганий код */
-fun adult(a:Int):Boolean{return a>=18}
-fun pu(u:User){println(u.name);println(u.age)}
-class U(n:String,a:Int)
+class N {
+    static boolean e(int n) { return n % 2 == 0; }
+    static void p(int n) { System.out.println(n); System.out.println(e(n)); }
+}
+
